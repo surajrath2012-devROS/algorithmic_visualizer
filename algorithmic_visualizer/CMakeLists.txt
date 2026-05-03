@@ -9,8 +9,7 @@ endif()
 find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(std_msgs REQUIRED)
-find_package(visualization REQUIRED)
-find_package(msgs REQUIRED)
+find_package(visualization_msgs REQUIRED)
 
 if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)
@@ -23,5 +22,16 @@ if(BUILD_TESTING)
   set(ament_cmake_cpplint_FOUND TRUE)
   ament_lint_auto_find_test_dependencies()
 endif()
+
+add_executable(streamer_node src/streamer_node.cpp)
+ament_target_dependencies(streamer_node rclcpp std_msgs visualization_msgs)
+
+add_executable(analyzer_node src/analyzer_node.cpp)
+ament_target_dependencies(analyzer_node rclcpp std_msgs visualization_msgs)
+
+install(TARGETS
+  streamer_node
+  analyzer_node
+  DESTINATION lib/${PROJECT_NAME})
 
 ament_package()
